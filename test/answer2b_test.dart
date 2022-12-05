@@ -3,7 +3,7 @@ import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
 void main() {
-  test('Calculate my tournament score', () {
+  test('2b. Calculate my tournament score', () {
     final solver = Solver2b();
 
     expect(12, same(solver.solve(input1)));

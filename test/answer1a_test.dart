@@ -2,7 +2,7 @@ import 'package:aoc/answer1a.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('If we found the right elf', () {
+  test('1a. If we found the right elf', () {
     final solver = Solver1a();
 
     expect(5000, same(solver.solve(input1)));

@@ -2,7 +2,7 @@ import 'package:aoc/answer1b.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('If we found the elf with the most calories', () {
+  test('1b. If we found the elf with the most calories', () {
     final solver = Solver1b();
 
     expect(10000, same(solver.solve(input1)));

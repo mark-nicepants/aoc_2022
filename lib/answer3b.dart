@@ -21,12 +21,12 @@ Find the item type that corresponds to the badges of each three-Elf group. What 
 
 Future<void> main() async {
   final input = LocalFileSystem().file('${io.Directory.current.path}/lib/input/input3.txt');
-  final answer = Solver3a().solve(await input.readAsLines());
+  final answer = Solver3b().solve(await input.readAsLines());
 
   print("What is the sum of the priorities of those item types? Answer: $answer");
 }
 
-class Solver3a {
+class Solver3b {
   int solve(List<String> input) {
     final output = input
         .map((line) => RuckSack.fromInput(line))
@@ -34,6 +34,21 @@ class Solver3a {
         .fold<int>(0, (prev, element) => prev + element);
 
     return output;
+  }
+}
+
+class ElfGroup {
+  final List<RuckSack> members;
+  final Item badge;
+
+  ElfGroup(this.members) : badge = Item.findBadgeInGroup(members);
+
+  static List<ElfGroup> fromRuckSacks(List<RuckSack> rucksacks, int groupSize) {
+    final groups = <ElfGroup>[];
+    for (var i = 0; i < rucksacks.length; i += groupSize) {
+      groups.add(ElfGroup(rucksacks.sublist(i, i + groupSize)));
+    }
+    return groups;
   }
 }
 
@@ -52,6 +67,13 @@ class RuckSack {
 
   List<Item> get sharedItems {
     return compartment1.sharedItems(compartment2);
+  }
+
+  List<Item> get uniqueItems {
+    return <Item>{
+      ...compartment1.items,
+      ...compartment2.items,
+    }.toList();
   }
 }
 
@@ -84,6 +106,28 @@ class Item extends Equatable {
 
   @override
   List<Object?> get props => [value];
+
+  static Item findBadgeInGroup(List<RuckSack> members) {
+    final itemCounts = <Item, int>{};
+    for (final member in members) {
+      for (final item in member.uniqueItems) {
+        itemCounts[item] = (itemCounts[item] ?? 0) + 1;
+      }
+    }
+
+    Item? badge;
+    itemCounts.forEach((key, value) {
+      if (value == members.length) {
+        badge = key;
+      }
+    });
+
+    if (badge != null) {
+      return badge!;
+    } else {
+      throw 'No group badge found';
+    }
+  }
 }
 
 extension StringEx on String {
