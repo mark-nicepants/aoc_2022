@@ -6,6 +6,9 @@ void main() {
   test('4b. In how many assignment pairs do the ranges overlap?', () {
     final solver = Solver4b();
 
+    expect(solver.key, '4b');
+    expect(solver.question, startsWith('In how many assignment pairs do the ranges overlap'));
+
     expect(4, same(solver.solve(input)));
   });
 }

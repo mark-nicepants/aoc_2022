@@ -4,12 +4,14 @@ import 'package:test/scaffolding.dart';
 
 void main() {
   test('5b After the rearrangement procedure completes, what crate ends up on top of each stack?', () {
-    final platform = Platform.fromInput(4, input);
+    final platform = Platform.fromInput(4, start);
 
     // Query per row
     expect(platform.row(0), equals('ZMP'));
     expect(platform.row(1), equals('NC '));
     expect(platform.row(2), equals(' D '));
+
+    expect(platform.toString(), equals(platformString));
 
     // Top stack
     expect(platform.topStack(), equals('NDP'));
@@ -30,12 +32,20 @@ void main() {
     platform.handleInstruction(parsedInstructions[3]);
     expect(platform.topStack(), equals('MCD'));
 
-    final solver = Solver5b();
-    expect(solver.solve(input, instructions), equals("MCD"));
+    final solver = Solver5b(start);
+
+    expect(solver.key, '5b');
+    expect(solver.question, startsWith('After the rearrangement procedure completes'));
+
+    expect(solver.solve(instructions), equals("MCD"));
   });
 }
 
-final input = [
+final platformString = '1: [Z] [N]\n'
+    '2: [M] [C] [D]\n'
+    '3: [P]';
+
+final start = [
   "    [D]    ",
   "[N] [C]    ",
   "[Z] [M] [P]",

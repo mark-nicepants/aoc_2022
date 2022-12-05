@@ -1,31 +1,24 @@
-import 'dart:io';
+import 'package:aoc/solver.dart';
 
-import 'package:file/local.dart';
+/// Before the rearrangement process finishes, update your simulation so that the
+/// Elves know where they should stand to be ready to unload the final supplies.
+///
+/// After the rearrangement procedure completes, what crate ends up on top of each stack
 
-final puzzleStart = [
-  "        [G]         [D]     [Q]    ",
-  "[P]     [T]         [L] [M] [Z]    ",
-  "[Z] [Z] [C]         [Z] [G] [W]    ",
-  "[M] [B] [F]         [P] [C] [H] [N]",
-  "[T] [S] [R]     [H] [W] [R] [L] [W]",
-  "[R] [T] [Q] [Z] [R] [S] [Z] [F] [P]",
-  "[C] [N] [H] [R] [N] [H] [D] [J] [Q]",
-  "[N] [D] [M] [G] [Z] [F] [W] [S] [S]",
-  " 1   2   3   4   5   6   7   8   9 ",
-];
+class Solver5b extends ISolver {
+  @override
+  String get key => '5b';
 
-Future<void> main() async {
-  final input = LocalFileSystem().file('${Directory.current.path}/lib/input/input5.txt');
-  final answer = Solver5b().solve(puzzleStart, await input.readAsLines());
+  @override
+  String get question => 'After the rearrangement procedure completes, what crate ends up on top of each stack?';
 
-  print("After the rearrangement procedure completes, what crate ends up on top of each stack?? Answer: $answer");
-}
+  final Platform platform;
 
-class Solver5b {
-  String solve(List<String> puzzle, List<String> instructions) {
-    final platform = Platform.fromInput(4, puzzle);
+  Solver5b(List<String> puzzle) : platform = Platform.fromInput(4, puzzle);
 
-    platform.handleInstructions(instructions.map(Instruction.fromInput).toList());
+  @override
+  String solve(List<String> input) {
+    platform.handleInstructions(input.map(Instruction.fromInput).toList());
 
     return platform.topStack();
   }
@@ -88,7 +81,7 @@ class Stack {
 
   @override
   String toString() {
-    return " $index\t${crates.map((e) => "[$e]").join(" ")}";
+    return "$index: ${crates.map((e) => "[$e]").join(" ")}";
   }
 
   List<String> grab(int numCrates) {

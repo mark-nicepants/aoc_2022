@@ -5,6 +5,9 @@ void main() {
   test('1b. If we found the elf with the most calories', () {
     final solver = Solver1b();
 
+    expect(solver.key, '1b');
+    expect(solver.question, startsWith('Find the top three Elves'));
+
     expect(10000, same(solver.solve(input1)));
     expect(9200, same(solver.solve(input2)));
   });

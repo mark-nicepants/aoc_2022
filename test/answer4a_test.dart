@@ -6,6 +6,9 @@ void main() {
   test('4a. In how many assignment pairs does one range fully contain the other?', () {
     final solver = Solver4a();
 
+    expect(solver.key, '4a');
+    expect(solver.question, startsWith('In how many assignment pairs does'));
+
     expect(2, same(solver.solve(input)));
   });
 }

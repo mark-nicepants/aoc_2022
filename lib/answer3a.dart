@@ -1,6 +1,5 @@
+import 'package:aoc/solver.dart';
 import 'package:equatable/equatable.dart';
-import 'package:file/local.dart';
-import 'dart:io' as io;
 /*
 Every set of three lines in your list corresponds to a single group, but each group can have a different badge item type. So, in the above example, the first group's rucksacks are the first three lines:
 
@@ -19,14 +18,15 @@ Priorities for these items must still be found to organize the sticker attachmen
 Find the item type that corresponds to the badges of each three-Elf group. What is the sum of the priorities of those item types?
  */
 
-Future<void> main() async {
-  final input = LocalFileSystem().file('${io.Directory.current.path}/lib/input/input3.txt');
-  final answer = Solver3a().solve(await input.readAsLines());
+class Solver3a extends ISolver {
+  @override
+  String get key => '3a';
 
-  print("What is the sum of the priorities of those item types? Answer: $answer");
-}
+  @override
+  String get question => 'Find the item type that corresponds to the badges of each three-Elf group.\n'
+      'What is the sum of the priorities of those item types?';
 
-class Solver3a {
+  @override
   int solve(List<String> input) {
     final output = input
         .map((line) => RuckSack.fromInput(line))

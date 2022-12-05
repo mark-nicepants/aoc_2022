@@ -1,5 +1,4 @@
-import 'package:file/local.dart';
-import 'dart:io' as io;
+import 'package:aoc/solver.dart';
 /*
 For example, suppose the Elves finish writing their items' Calories and end up with the following list:
 
@@ -26,19 +25,19 @@ The fourth Elf is carrying food with 7000, 8000, and 9000 Calories, a total of 2
 The fifth Elf is carrying one food item with 10000 Calories.
 In case the Elves get hungry and need extra snacks, they need to know which Elf to ask: they'd like to know how many Calories are being carried by the Elf carrying the most Calories. In the example above, this is 24000 (carried by the fourth Elf).
 
-Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?
+Find the Elf carrying the most Calories. 
+How many total Calories is that Elf carrying?
  */
 
-Future<void> main() async {
-  final fs = const LocalFileSystem();
-  final input = fs.file('${io.Directory.current.path}/lib/input/input1.txt');
+class Solver1a extends ISolver {
+  @override
+  String get key => '1a';
 
-  final answer = Solver1a().solve(await input.readAsLines());
+  @override
+  String get question => 'Find the Elf carrying the most Calories.\n'
+      'How many total Calories is that Elf carrying?';
 
-  print("The Elf with the most calories is carrying $answer calories");
-}
-
-class Solver1a {
+  @override
   int solve(List<String> input) {
     int max = 0;
     int totalCalories = 0;

@@ -6,6 +6,9 @@ void main() {
   test('3a. What is the sum of the priorities of those item types?', () {
     final solver = Solver3a();
 
+    expect(solver.key, '3a');
+    expect(solver.question, startsWith('Find the item type that corresponds to the badges'));
+
     expect('p', same(RuckSack.fromInput(input[0]).sharedItems.first.value));
     expect('L', same(RuckSack.fromInput(input[1]).sharedItems.first.value));
     expect('P', same(RuckSack.fromInput(input[2]).sharedItems.first.value));

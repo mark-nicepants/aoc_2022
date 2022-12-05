@@ -1,15 +1,21 @@
-import 'dart:io';
+import 'package:aoc/solver.dart';
 
-import 'package:file/local.dart';
+/// Some of the pairs have noticed that one of their assignments fully contains the other.
+/// For example, 2-8 fully contains 3-7, and 6-6 is fully contained by 4-6.
+/// In pairs where one assignment fully contains the other, one Elf in the pair would
+/// be exclusively cleaning sections their partner will already be cleaning, so these
+/// seem like the most in need of reconsideration. In this example, there are 2 such pairs.
+///
+/// In how many assignment pairs does one range fully contain the other?
 
-Future<void> main() async {
-  final input = LocalFileSystem().file('${Directory.current.path}/lib/input/input4.txt');
-  final answer = Solver4a().solve(await input.readAsLines());
+class Solver4a extends ISolver {
+  @override
+  String get key => '4a';
 
-  print("In how many assignment pairs does one range fully contain the other? Answer: $answer");
-}
+  @override
+  String get question => 'In how many assignment pairs does one range fully contain the other?';
 
-class Solver4a {
+  @override
   int solve(List<String> input) {
     return input.map(ElfGroup.fromInput).toList().where((element) => element.oneContainsOther()).length;
   }

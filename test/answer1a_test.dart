@@ -5,8 +5,11 @@ void main() {
   test('1a. If we found the right elf', () {
     final solver = Solver1a();
 
-    expect(5000, same(solver.solve(input1)));
-    expect(6200, same(solver.solve(input2)));
+    expect(solver.solve(input1), same(5000));
+    expect(solver.solve(input2), same(6200));
+
+    expect(solver.key, '1a');
+    expect(solver.question, startsWith('Find the Elf carrying'));
   });
 }
 

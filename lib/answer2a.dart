@@ -1,3 +1,5 @@
+import 'package:aoc/solver.dart';
+
 /*
 For example, suppose you were given the following strategy guide:
 
@@ -13,18 +15,15 @@ In this example, if you were to follow the strategy guide, you would get a total
 
 What would your total score be if everything goes exactly according to your strategy guide?
 */
-import 'dart:io';
 
-import 'package:file/local.dart';
+class Solver2a extends ISolver {
+  @override
+  String get key => '2a';
 
-Future<void> main() async {
-  final input = LocalFileSystem().file('${Directory.current.path}/lib/input/input2.txt');
-  final answer = Solver2a().solve(await input.readAsLines());
+  @override
+  String get question => 'What would your total score be if everything goes exactly according to your strategy guide?';
 
-  print("My tournament score = $answer");
-}
-
-class Solver2a {
+  @override
   int solve(List<String> input) {
     final games = input.map((e) {
       final plays = e.split(' ');
@@ -59,7 +58,7 @@ enum Play {
     if (Play.rock.allowed.contains(value)) return Play.rock;
     if (Play.paper.allowed.contains(value)) return Play.paper;
     if (Play.sissors.allowed.contains(value)) return Play.sissors;
-    throw 'Invalid input for generating play -> $value';
+    throw UnsupportedError('Invalid input for generating play -> $value');
   }
 
   const Play(this.allowed);
@@ -78,8 +77,6 @@ enum Play {
   }
 
   Result winsFrom(Play other) {
-    if (other == this) return Result.draw;
-
     switch (this) {
       case Play.rock:
         switch (other) {

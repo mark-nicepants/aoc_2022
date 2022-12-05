@@ -6,6 +6,9 @@ void main() {
   test('3b. What is the sum of the priorities of those item types?', () {
     final solver = Solver3b();
 
+    expect(solver.key, '3b');
+    expect(solver.question, startsWith('Find the item type that corresponds to the badges of each three-Elf group.'));
+
     final rucksacks = input.map(RuckSack.fromInput).toList();
     final groups = ElfGroup.fromRuckSacks(rucksacks, 3);
 
