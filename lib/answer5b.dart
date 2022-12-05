@@ -45,7 +45,6 @@ class Platform {
 
       for (var element in matches) {
         final stackIndex = element.start ~/ charsPerStack;
-        print('add ${element.group(1)!} to stack $stackIndex (${element.start})');
         stacks[stackIndex].add(element.group(1)!);
       }
     }
@@ -71,7 +70,6 @@ class Platform {
   }
 
   void handleInstruction(Instruction instruction) {
-    print(instruction);
     final cratesToMove = stacks[instruction.fromStackIndex - 1].grab(instruction.numCratesToMove);
     stacks[instruction.toStackIndex - 1].put(cratesToMove);
   }
