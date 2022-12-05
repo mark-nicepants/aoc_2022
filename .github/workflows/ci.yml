@@ -1,0 +1,11 @@
+name: 'Dart tests'
+on:
+  pull_request:
+  push:
+jobs:
+  drive:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: subosito/flutter-action@v1
+    - run: dart test
