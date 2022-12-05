@@ -28,12 +28,10 @@ Future<void> main() async {
 
 class Solver3b {
   int solve(List<String> input) {
-    final output = input
-        .map((line) => RuckSack.fromInput(line))
-        .map((rucksack) => rucksack.sharedItems.first.priority)
-        .fold<int>(0, (prev, element) => prev + element);
+    final sacks = input.map(RuckSack.fromInput).toList();
+    final groups = ElfGroup.fromRuckSacks(sacks, 3);
 
-    return output;
+    return groups.map((e) => e.badge.priority).reduce((value, element) => value + element);
   }
 }
 

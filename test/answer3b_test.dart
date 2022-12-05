@@ -28,7 +28,7 @@ void main() {
     expect('Z', same(groups[1].badge.value));
     expect(52, same(groups[1].badge.priority));
 
-    expect(157, same(solver.solve(input)));
+    expect(70, same(solver.solve(input)));
   });
 }
 
