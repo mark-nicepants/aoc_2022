@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:aoc/answer1a.dart';
 import 'package:aoc/answer1b.dart';
 import 'package:aoc/answer2a.dart';
@@ -12,8 +10,11 @@ import 'package:aoc/answer5a.dart';
 import 'package:aoc/answer5b.dart';
 import 'package:aoc/answer6a.dart';
 import 'package:aoc/answer6b.dart';
+import 'package:aoc/answer7a.dart';
+import 'package:aoc/answer7b.dart';
 import 'package:args/args.dart';
 import 'package:file/local.dart';
+import 'dart:io' as io;
 
 Future<void> main(List<String> args) async {
   final parser = ArgParser();
@@ -33,7 +34,7 @@ Future<void> main(List<String> args) async {
 
     final solverKey = results['answer'] as String;
     final index = solverKey.replaceAll('a', '').replaceAll('b', '');
-    final input = LocalFileSystem().file('${Directory.current.path}/lib/input/input$index.txt');
+    final input = LocalFileSystem().file('${io.Directory.current.path}/lib/input/input$index.txt');
 
     print(_solvers.firstWhere((element) => element.key == solverKey).printSolve(await input.readAsLines()));
   } catch (e) {
@@ -54,6 +55,8 @@ final _solvers = [
   Solver5b(_puzzleStart5),
   Solver6a(),
   Solver6b(),
+  Solver7a(),
+  Solver7b(),
 ];
 
 final _puzzleStart5 = [
