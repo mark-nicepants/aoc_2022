@@ -30,6 +30,8 @@ void main() {
     final answer = solver.solve(input2);
 
     expect(crt.lineOutput(), equals(outputFromCpu));
+    expect(crt.toString(), equals(outputFromCpu.join('\n')));
+
     expect(answer, equals(13140));
 
     expect(() => Operation.fromInput('invalid'), throwsA(TypeMatcher<UnsupportedError>()));

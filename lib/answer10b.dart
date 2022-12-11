@@ -31,8 +31,6 @@ class Solver10b extends ISolver {
       },
     );
 
-    print(crt.toString());
-
     return parts.reduce((value, element) => value + element);
   }
 }

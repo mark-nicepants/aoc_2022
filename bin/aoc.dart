@@ -1,5 +1,7 @@
 import 'package:aoc/answer10a.dart';
 import 'package:aoc/answer10b.dart';
+import 'package:aoc/answer11a.dart';
+import 'package:aoc/answer11b.dart';
 import 'package:aoc/answer1a.dart';
 import 'package:aoc/answer1b.dart';
 import 'package:aoc/answer2a.dart';
@@ -69,6 +71,8 @@ final _solvers = [
   Solver9b(),
   Solver10a(),
   Solver10b(),
+  Solver11a(),
+  Solver11b(),
 ];
 
 final _puzzleStart5 = [
