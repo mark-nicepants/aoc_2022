@@ -8,12 +8,28 @@ void main() {
     expect(solver.key, equals('14a'));
     expect(solver.question, startsWith('Using your scan, simulate the falling sand.'));
 
-    final answer = solver.solve(input);
-
-    expect(answer, equals(24));
+    solver.cave.setWalls(input);
 
     expect(solver.cave.map(false), equals(caveMap));
-    expect(solver.cave.map(true), equals(caveMap));
+
+    solver.cave.dropSandUnit();
+    expect(solver.cave.map(true), equals(sandMap1Unit));
+
+    solver.cave.dropSandUnit();
+    expect(solver.cave.map(true), equals(sandMap2Units));
+
+    solver.cave.dropSandUnit();
+    solver.cave.dropSandUnit();
+    solver.cave.dropSandUnit();
+    expect(solver.cave.map(true), equals(sandMap5Units));
+
+    while (!solver.cave.sandReachedVoid) {
+      solver.cave.dropSandUnit();
+    }
+    expect(solver.cave.map(true), equals(endOutput));
+
+    final answer = solver.solve(input);
+    expect(answer, equals(24));
   });
 }
 
@@ -45,5 +61,44 @@ final endOutput = [
   '..###ooo#.',
   '....oooo#.',
   '.o.ooooo#.',
+  '#########.',
+];
+
+final sandMap1Unit = [
+  '......+...',
+  '..........',
+  '..........',
+  '..........',
+  '....#...##',
+  '....#...#.',
+  '..###...#.',
+  '........#.',
+  '......o.#.',
+  '#########.',
+];
+
+final sandMap2Units = [
+  '......+...',
+  '..........',
+  '..........',
+  '..........',
+  '....#...##',
+  '....#...#.',
+  '..###...#.',
+  '........#.',
+  '.....oo.#.',
+  '#########.',
+];
+
+final sandMap5Units = [
+  '......+...',
+  '..........',
+  '..........',
+  '..........',
+  '....#...##',
+  '....#...#.',
+  '..###...#.',
+  '......o.#.',
+  '....oooo#.',
   '#########.',
 ];
