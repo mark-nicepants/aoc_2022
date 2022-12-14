@@ -12,6 +12,21 @@ void main() {
 
     expect(solver.cave.map(true), equals(endOutput));
     expect(answer, equals(93));
+
+    expect(
+      Point(0, 0, PointType.sand).moveTo(Point(2, 0, PointType.empty)),
+      equals(Point(1, 0, PointType.sand)),
+    );
+
+    expect(
+      Point(0, 0, PointType.sand).moveTo(Point(0, -5, PointType.empty)),
+      equals(Point(0, -1, PointType.sand)),
+    );
+
+    expect(
+      () => Point(0, 0, PointType.sand).moveTo(Point(1, 5, PointType.empty)),
+      throwsA(TypeMatcher<UnsupportedError>()),
+    );
   });
 }
 

@@ -103,8 +103,8 @@ class Cave {
     });
   }
 
-  void dropSandUnit([bool debug = false]) {
-    final idleLocation = fall(sandPourLocation, debug);
+  void dropSandUnit() {
+    final idleLocation = fall(sandPourLocation);
 
     // No wall, end here
     if (idleLocation == null) {
@@ -115,19 +115,18 @@ class Cave {
     }
   }
 
-  Point? fall(Point sand, [bool debug = false]) {
-    if (debug) print('fall $sand');
+  Point? fall(Point sand) {
     final obstacle = firstObstacleBelow(sand);
-    if (debug) print('obstacle $obstacle');
+
     if (obstacle == null) return null;
 
     final left = getPoint(obstacle.x - 1, obstacle.y);
-    if (debug) print('left $left = ${obstacle.x - 1} - ${obstacle.y}');
-    if (left == null) return fall(obstacle.copyAsSand(xOffset: -1), debug);
+
+    if (left == null) return fall(obstacle.copyAsSand(xOffset: -1));
 
     final right = getPoint(obstacle.x + 1, obstacle.y);
-    if (debug) print('right $right = ${obstacle.x + 1} - ${obstacle.y}');
-    if (right == null) return fall(obstacle.copyAsSand(xOffset: 1), debug);
+
+    if (right == null) return fall(obstacle.copyAsSand(xOffset: 1));
 
     // Land on top of found obstacle when left and right are not an option
     return obstacle.copyAsSand(yOffset: -1);
@@ -186,11 +185,6 @@ class Point extends Equatable {
 
   @override
   List<Object?> get props => [x, y];
-
-  @override
-  String toString() {
-    return '$x, $y => $type';
-  }
 
   Point copyAsSand({int xOffset = 0, int yOffset = 0}) {
     return Point(x + xOffset, y + yOffset, PointType.sand);

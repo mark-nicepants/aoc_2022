@@ -98,11 +98,7 @@ class Cave {
           return 'o';
         }
 
-        if (!filled && p.type == PointType.sand) {
-          return '.';
-        } else {
-          return p.type.toString();
-        }
+        return p.type.toString();
       }).join('');
     });
   }
@@ -190,11 +186,6 @@ class Point extends Equatable {
 
   @override
   List<Object?> get props => [x, y];
-
-  @override
-  String toString() {
-    return '$x, $y => $type';
-  }
 
   Point copyAsSand({int xOffset = 0, int yOffset = 0}) {
     return Point(x + xOffset, y + yOffset, PointType.sand);
