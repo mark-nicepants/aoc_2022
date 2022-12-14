@@ -12,12 +12,6 @@ void main() {
 
     expect(solver.pairs.length, equals(8));
 
-    expect(parseStringAsList('[1,1,3,1,1]').length, equals(5));
-    expect(parseStringAsList('[[8,7,6]]').length, equals(1));
-    expect(parseStringAsList('[[1],[2,3,4]]').length, equals(2));
-    expect(parseStringAsList('[[1],[2,3,4]]')[0], equals("[1]"));
-    expect(parseStringAsList('[[1],[2,3,4]]')[1], equals("[2,3,4]"));
-
     expect(answer, equals(13));
   });
 }

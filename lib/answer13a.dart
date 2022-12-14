@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:aoc/solver.dart';
 
 class Solver13a extends ISolver {
@@ -14,26 +17,27 @@ class Solver13a extends ISolver {
   int solve(List<String> input) {
     for (int i = 0; i < input.length; i += 3) {
       final inputs = input.skip(i).take(2).toList();
-      pairs.add(Pair(0, inputs[0], inputs[1]));
+
+      final left = jsonDecode(inputs[0]);
+      final right = jsonDecode(inputs[1]);
+
+      pairs.add(Pair(0, left, right));
     }
 
-    int sumOfInOrder = 0;
-    for (var i = 0; i < pairs.length; i++) {
-      print('Pair index $i');
-      if (pairs[i].inOrder == -1) {
-        sumOfInOrder += (i + 1);
-      }
-      print('');
-    }
-
-    return sumOfInOrder;
+    return pairs
+        .asMap()
+        .map((i, value) => MapEntry(i, value.inOrder == -1 ? i + 1 : null))
+        .values
+        .where((element) => element != null)
+        .cast<int>()
+        .reduce((value, element) => value + element);
   }
 }
 
 class Pair {
   final int level;
-  final String input1;
-  final String input2;
+  final dynamic input1;
+  final dynamic input2;
 
   Pair(this.level, this.input1, this.input2);
 
@@ -42,35 +46,25 @@ class Pair {
   int get inOrder {
     print('$indent- Compare: $input1 vs $input2');
 
-    String left = input1;
-    String right = input2;
+    dynamic left = input1;
+    dynamic right = input2;
 
-    if (_bothInt(left, right)) {
+    if (left is num && right is num) {
       return _compareInts(left, right);
-    } else {
-      if (_isInt(left) && _isList(right)) {
-        print('$indent  - Mixed types; convert left to [$left] and retry');
-        left = "[$left]";
-      }
-      if (_isInt(right) && _isList(left)) {
-        print('$indent  - Mixed types; convert right to [$right] and retry');
-        right = "[$right]";
-      }
-
-      return _compareLists(left, right);
     }
+    if (left is num && right is List) {
+      print('$indent  - Mixed types; convert left to [$left] and retry');
+      left = [left];
+    }
+    if (right is num && left is List) {
+      print('$indent  - Mixed types; convert right to [$right] and retry');
+      right = [right];
+    }
+
+    return _compareLists(left as List, right as List);
   }
 
-  bool _isInt(String input) => int.tryParse(input) != null;
-
-  bool _isList(String input) => input.startsWith('[');
-
-  bool _bothInt(String left, String right) => _isInt(left) && _isInt(right);
-
-  int _compareInts(String left, String right) {
-    final l = int.parse(left);
-    final r = int.parse(right);
-
+  int _compareInts(num l, num r) {
     if (l < r) {
       print('$indent  - Left side is smaller, so inputs are in the right order');
     } else if (l > r) {
@@ -80,14 +74,17 @@ class Pair {
     return l.compareTo(r);
   }
 
-  int _compareLists(String left, String right) {
-    final l = parseStringAsList(left);
-    final r = parseStringAsList(right);
+  int _compareLists(List l, List r) {
+    final length = max(l.length, r.length);
 
-    for (var i = 0; i < l.length; i++) {
+    for (var i = 0; i < length; i++) {
       if (i >= r.length) {
         print('$indent  - Right side ran out of items, so inputs are not in the right order');
         return 1;
+      }
+      if (i >= l.length) {
+        print('$indent  - Left side ran out of items, so inputs are in the right order');
+        return -1;
       }
 
       final childOrder = Pair(level + 1, l[i], r[i]).inOrder;
@@ -96,38 +93,6 @@ class Pair {
       }
     }
 
-    // If the left list runs out of items first, right order
-    if (l.length < r.length) {
-      print('$indent  - Left side ran out of items, so inputs are in the right order');
-      return -1;
-    }
-
     return 0;
   }
-}
-
-List<String> parseStringAsList(String input) {
-  String value = '';
-  int listIndex = 0;
-  final items = <String>[];
-
-  input.substring(1, input.length - 1).split('').forEach((char) {
-    if (char == ',' && listIndex == 0) {
-      items.add(value);
-      value = '';
-    } else {
-      if (char == '[') {
-        listIndex++;
-      } else if (char == ']') {
-        listIndex--;
-      }
-      value += char;
-    }
-  });
-
-  if (value.isNotEmpty) {
-    items.add(value);
-  }
-
-  return items;
 }
