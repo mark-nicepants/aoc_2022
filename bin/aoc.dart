@@ -8,6 +8,8 @@ import 'package:aoc/answer13a.dart';
 import 'package:aoc/answer13b.dart';
 import 'package:aoc/answer14a.dart';
 import 'package:aoc/answer14b.dart';
+import 'package:aoc/answer15a.dart';
+import 'package:aoc/answer15b.dart';
 import 'package:aoc/answer1a.dart';
 import 'package:aoc/answer1b.dart';
 import 'package:aoc/answer2a.dart';
@@ -85,6 +87,8 @@ final _solvers = [
   Solver13b(),
   Solver14a(),
   Solver14b(),
+  Solver15a(2000000),
+  Solver15b(0, 4000000),
 ];
 
 final _puzzleStart5 = [
