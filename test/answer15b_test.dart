@@ -12,11 +12,11 @@ void main() {
     final grid = Grid();
     solver.parseInput(input, sensors, grid);
 
-    final coverage = grid.coverage(sensors);
+    final coverage = grid.coverage([sensors[6]]);
     print(coverage.join('\n'));
 
-    final coverage45 = grid.coverage(sensors, rotated: true);
-    print(coverage45.join('\n'));
+    // final coverage45 = grid.coverage(sensors, rotated: true);
+    // print(coverage45.join('\n'));
 
     final answer = solver.solve(input);
     expect(answer, equals(56000011));

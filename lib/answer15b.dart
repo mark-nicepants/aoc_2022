@@ -23,7 +23,7 @@ class Solver15b extends ISolver {
 
     parseInput(input, sensors, grid);
 
-    final point = grid.firstUnavailableSpace(sensors, min, max);
+    final point = grid.checkPerimiter(sensors, min, max);
     print(point);
 
     if (point == null) {
@@ -104,22 +104,11 @@ class Grid {
 
   int rowIndex(int y) => minY.abs() + y + 1;
 
-  List<String> coverage(
-    List<Sensor> sensors, {
-    int? min,
-    int? max,
-    bool rotated = false,
-  }) {
+  List<String> coverage(List<Sensor> sensors) {
     final coverage = <String>[];
     String row = "";
     int lastY = 0;
     loop((x, y) {
-      if (min != null && max != null) {
-        if (x < min || x > max || y < min || y > max) {
-          return;
-        }
-      }
-
       if (lastY != y) {
         coverage.add(row);
         lastY = y;
@@ -143,27 +132,48 @@ class Grid {
     return row;
   }
 
-  Point? firstUnavailableSpace(List<Sensor> sensors, int min, int max) {
-    bool occupied(int x, int y) {
-      // Check if point is beacon or sensor, if so its occupied
-      if (hasPoint(x, y)) return true;
+  Point? checkPerimiter(List<Sensor> sensors, int min, int max) {
+    for (int i = 0; i < sensors.length; i++) {
+      var sensor = sensors[i];
+      final stopwatch = Stopwatch()..start();
 
-      for (final sensor in sensors) {
-        if (sensor.inRange(x, y)) {
-          return true;
+      print('Sensor $i walk edges');
+      final result = sensor.walkEdges((x, y) {
+        final validX = x > min && x < max;
+        final validY = y > min && y < max;
+
+        if (!validX || !validY) {
+          return false;
         }
+
+        // When true this will break the walk edges and return this x,y as a result
+        return _cellEmpty(sensors, x, y);
+      });
+
+      if (result != null) {
+        print("Result found! $result");
+        return result;
       }
 
-      return false;
-    }
-
-    for (var x = min; x < max; x++) {
-      for (var y = min; y < max; y++) {
-        if (!occupied(x, y)) return Point(x, y);
-      }
+      print('Sensor $sensor checked ($i/${sensors.length}) ${stopwatch.elapsed}');
     }
 
     return null;
+  }
+
+  bool _cellEmpty(List<Sensor> sensors, int x, int y) {
+    if (hasPoint(x, y)) {
+      return false;
+    }
+
+    // Check if point is beacon or sensor
+    for (final sensor in sensors) {
+      if (sensor.inRange(x, y)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   String _checkCell(List<Sensor> sensors, int x, int y) {
@@ -217,6 +227,29 @@ class Sensor extends Point {
 
   bool inRange(int x, int y) {
     return distanceTo(x, y) <= distance;
+  }
+
+  Point? walkEdges(bool Function(int x, int y) callback) {
+    // Add all edges just outside of our reach given distance to beacon
+    for (int xOffset = 0; xOffset <= distance + 1; xOffset++) {
+      final yOffset = (distance + 1) - xOffset;
+
+      bool breakLoop = false;
+
+      breakLoop = callback(x - xOffset, y + yOffset);
+      if (breakLoop) return Point(x - xOffset, y + yOffset);
+
+      breakLoop = callback(x + xOffset, y + yOffset);
+      if (breakLoop) return Point(x + xOffset, y + yOffset);
+
+      breakLoop = callback(x - xOffset, y - yOffset);
+      if (breakLoop) return Point(x - xOffset, y - yOffset);
+
+      breakLoop = callback(x + xOffset, y - yOffset);
+      if (breakLoop) return Point(x + xOffset, y - yOffset);
+    }
+
+    return null;
   }
 
   @override
